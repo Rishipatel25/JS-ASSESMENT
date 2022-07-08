@@ -90,7 +90,6 @@ function UpdateList(todo, fromLocation) {
   }
 
   function viewMe(e, id) {
-    let foundId;
     for (const ele of todoList) {
         if (ele.id == id) {
             const des = document.getElementById('editdes');
@@ -98,7 +97,10 @@ function UpdateList(todo, fromLocation) {
             const time = document.getElementById('edittim');
             const noti = document.getElementById('editnot');
             const status = document.getElementById('editsta');
+            const title = document.getElementById('edittitle');
 
+
+            title.innerHTML = `<b>${ele.name}</b>`;
             des.innerHTML = `<b>${ele.desc}</b>`;
             date.innerHTML = `<b>${ele.date}</b>`;
             time.innerHTML = `<b>${ele.time}</b>`;
