@@ -99,13 +99,11 @@ function UpdateList(todo, fromLocation) {
             const noti = document.getElementById('editnot');
             const status = document.getElementById('editsta');
 
-            des.style.innerHTML = `<b>${ele.desc}</b>`;
-            date.style.innerHTML = `<b>${ele.date}</b>`;
-            time.style.innerHTML = `<b>${ele.time}</b>`;
-            noti.style.innerHTML = `<b>${ele.noti}</b>`;
-            status.style.innerHTML = `<b>${ele.status}</b>`;
-            console.log(des);
-            console.log(ele);
+            des.innerHTML = `<b>${ele.desc}</b>`;
+            date.innerHTML = `<b>${ele.date}</b>`;
+            time.innerHTML = `<b>${ele.time}</b>`;
+            noti.innerHTML = `<b>${ele.noti}</b>`;
+            status.innerHTML = `<b>${ele.status}</b>`;
         }
     }
   }
