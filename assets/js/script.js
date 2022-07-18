@@ -1,16 +1,17 @@
-const closemodal = document.getElementById('closex'); 
-const form = document.querySelector('.addTodoFrom');
-const totalTask = document.getElementById('totalTask');
-const totalTime = document.getElementById('totalTime');
+(function(){
+  const closemodal = document.getElementById('closex'); 
+  const form = document.querySelector('.addTodoFrom');
+  const totalTask = document.getElementById('totalTask');
+  const totalTime = document.getElementById('totalTime');
+  const searchInput = document.getElementById('searchinput');
 
-let cnt = 1;
-let id;
-// Add Data From form
-let todoList = [];
+  let cnt = 1;
+  let id;
+  let todoList = [];
 
-function UpdateList(todo, fromLocation) {
+  const table = document.getElementById('table');
+  function UpdateList(todo, fromLocation) {
     // console.log("Here Test todo", todo.length);
-    const table = document.getElementById('table');
     if (todo.isActive == false ) {
         todo.remove()
     }
@@ -33,12 +34,11 @@ function UpdateList(todo, fromLocation) {
               <td>
               <span class="cursor-pointer" role="button" id="${todo[i].id}" onclick="viewMe(event,${todo[i].id})" data-bs-toggle="modal" data-bs-target="#exampleModal">View</span> 
               <span  class="cursor-pointer" role="button" id="edit${todo[i].id}" onclick="editMe(event,${todo[i].id})" data-bs-toggle="modal" data-bs-target="#EditModal" >Edit</span> 
-              <span  class="cursor-pointer" role="button" id="${todo[i].id}" onclick="deleteMe(event,${todo[i].id})" >Delete</span>
+              <span  class="cursor-pointer" role="button" id="${todo[i].id}" >Delete</span>
               </td>
             `;
     
             table.append(tr);
-            
         }
     }
     if (fromLocation == "delete") {
@@ -64,32 +64,28 @@ function UpdateList(todo, fromLocation) {
               <td>
               <span class="cursor-pointer" role="button" id="${todo[i].id}" onclick="viewMe(event,${todo[i].id})" data-bs-toggle="modal" data-bs-target="#exampleModal">View</span> 
               <span  class="cursor-pointer" role="button" id="edit${todo[i].id}" onclick="editMe(event,${todo[i].id})" data-bs-toggle="modal" data-bs-target="#EditModal" >Edit</span> 
-              <span  class="cursor-pointer" role="button" id="${todo[i].id}" onclick="deleteMe(event,${todo[i].id})" >Delete</span>
+              <span  class="cursor-pointer" role="button" id="${todo[i].id}" >Delete</span>
               </td>
             `;
-    
             table.append(tr);
-            
+
         }
         
     }
     totalTask.innerHTML = `<b>${todo.length}</b>`;
-
   }
 
-  function deleteMe(e, id) {
+
+  function deleteMe(id) {
     console.log(id);
-    const updatedList = todoList.filter(item => item.id !== id);
-    console.log(updatedList);
+    console.log(todoList);
+    // const updatedList = todoList.filter(item => item.id !== id);
+    // console.log(updatedList);
 
     UpdateList(updatedList, "delete");
   }
 
   function editMe(e, id) {
-
-  }
-
-  function viewMe(e, id) {
     for (const ele of todoList) {
         if (ele.id == id) {
             const des = document.getElementById('editdes');
@@ -98,16 +94,14 @@ function UpdateList(todo, fromLocation) {
             const noti = document.getElementById('editnot');
             const status = document.getElementById('editsta');
             const title = document.getElementById('edittitle');
-
-
             title.innerHTML = `<b>${ele.name}</b>`;
             des.innerHTML = `<b>${ele.desc}</b>`;
             date.innerHTML = `<b>${ele.date}</b>`;
             time.innerHTML = `<b>${ele.time}</b>`;
             noti.innerHTML = `<b>${ele.noti}</b>`;
             status.innerHTML = `<b>${ele.status}</b>`;
-        }
-    }
+          } 
+      }
   }
 
 
@@ -123,26 +117,34 @@ function addTodo(name, desc,date, time, noti, status) {
       isActive: true
     };
     todoList.push(todo);
+    localStorage.setItem("taskList", JSON.stringify(todoList))
 
     console.log(todoList);
     UpdateList(todoList, "add")
   }
 form.addEventListener('submit', event => {
   event.preventDefault();
-  console.log("hello");
-  const name = document.getElementById('Taskname').value;
-  const desc = document.getElementById('Taskdesc').value;
-  const date = document.getElementById('startdate').value;
-  const time = document.getElementById('timetaken').value;
-  const noti = document.getElementById('notification').value;
-  const status = document.getElementById('status').value;
-  addTodo(name, desc,date, time, noti, status);
-  closemodal.click()
-//   console.log(name, desc,date, time, noti, status);
+  let name = document.getElementById('Taskname');
+  let desc = document.getElementById('Taskdesc');
+  let date = document.getElementById('startdate');
+  let time = document.getElementById('timetaken');
+  let noti = document.getElementById('notification');
+  let status = document.getElementById('status');
+  addTodo(name.value, desc.value,date.value, time.value, noti.value, status.value);
+  name.value = "";
+  desc.value = "";
+  date.value = ""; 
+  time.value = "";
+  closemodal.click();
 });
 
-
-// End Form Data Adding 
-
-
-// Loop for table
+searchInput.addEventListener('keypress', (e) =>{
+    console.log(e.target.value);
+    for (let i = 0; i < todoList.length; i++) {
+      if (e.target.value == todoList[i].name || e.target.value == todoList[i].desc) {
+          console.log(todoList);
+      }
+    }
+    
+})
+})()
